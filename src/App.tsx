@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface UsersList {
+  name: string
+  age: number
+  email: string
 }
 
-export default App;
+function App() {
+  const [users, setUsers] = useState<UsersList[]>([])
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users')
+      .then((response) => response.json())
+      .then((res) => setUsers(res.data))
+  }, [])
+
+  return <div className="App">{JSON.stringify(users, null, '\t')}</div>
+}
+
+export default App
